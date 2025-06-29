@@ -37,6 +37,20 @@ export const NewHeroSection = ({ onCreateAgent, onTalkWithBot, isLoggedIn = fals
         <>
             <Navbar onCreateAgent={onCreateAgent} isLoggedIn={isLoggedIn} onSignOut={onSignOut} />
             <main className="overflow-hidden">
+                {/* Powered by Bolt.new Badge */}
+                <a 
+                    href="https://bolt.new" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="fixed top-4 right-4 z-50 hover:opacity-90 transition-opacity"
+                >
+                    <img 
+                        src="/black_circle_360x360.png" 
+                        alt="Powered by Bolt.new" 
+                        className="h-10 w-10"
+                    />
+                </a>
+                
                 <div
                     aria-hidden
                     className="z-[2] absolute inset-0 pointer-events-none isolate opacity-50 contain-strict hidden lg:block">
