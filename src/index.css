@@ -86,21 +86,19 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
   * {
-    @apply border;
+    @apply border-border;
   }
 
   body {
     @apply bg-background text-foreground font-inter;
   }
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .font-inter {
   font-family: 'Inter', sans-serif;
