@@ -86,19 +86,23 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-
-  * {
-    border-color: hsl(var(--border));
-  }
-
-  body {
-    @apply bg-background text-foreground font-inter;
-  }
 }
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: 'Inter', sans-serif;
+  }
+}
 
 .font-inter {
   font-family: 'Inter', sans-serif;
