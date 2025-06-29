@@ -146,7 +146,7 @@ const Footer = () => {
             <img 
               src="/black_circle_360x360.png" 
               alt="Powered by Bolt.new" 
-              className="h-10 w-10"
+              className="h-16 w-16"
             />
           </a>
         </div>
