@@ -91,7 +91,7 @@ const Navbar = ({ onCreateAgent, isLoggedIn, onSignOut }: NavbarProps) => {
                                     alt="DYOTA Logo" 
                                     className="h-16 w-auto"
                                 />
-                                <span className="text-xl font-bold text-gray-900 dark:text-white">Voice Bolt</span>
+                                <span className="text-xl font-bold text-black dark:text-white">Voice Bolt</span>
                             </a>
 
                             <button
@@ -238,4 +238,4 @@ const Navbar = ({ onCreateAgent, isLoggedIn, onSignOut }: NavbarProps) => {
     )
 }
 
-export default Navbar; 
+export default Navbar;
