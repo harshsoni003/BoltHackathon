@@ -129,12 +129,26 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-10 pt-6 text-center md:text-left">
+        <div className="border-t border-gray-800 mt-10 pt-6 text-center md:text-left flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-xs">
             <Link to="/copyright" className="hover:text-white transition-colors">
               © 2025 Smart Scaling AI, All Rights Reserved
             </Link>
           </p>
+          
+          {/* Powered by Bolt.new Badge */}
+          <a 
+            href="https://bolt.new" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="mt-4 md:mt-0 hover:opacity-90 transition-opacity"
+          >
+            <img 
+              src="/black_circle_360x360.png" 
+              alt="Powered by Bolt.new" 
+              className="h-10 w-10"
+            />
+          </a>
         </div>
       </div>
     </footer>
