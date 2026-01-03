@@ -19,7 +19,7 @@ interface UserProfile {
 }
 
 interface DashboardHeaderProps {
-  user: User;
+  user: User | null;
   profile: UserProfile | null;
   onSignOut: () => void;
 }
@@ -38,13 +38,13 @@ const DashboardHeader = ({ user, profile, onSignOut }: DashboardHeaderProps) => 
             />
           </div>
         </div>
-        
+
         <div className="flex items-center space-x-4">
           <Button variant="ghost" size="sm" className="relative">
             <Bell className="h-5 w-5 text-gray-600" />
             <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
           </Button>
-          
+
           <UserHeader user={user} profile={profile} onSignOut={onSignOut} />
         </div>
       </div>

@@ -26,10 +26,10 @@ const transitionVariants = {
 }
 
 interface NewHeroSectionProps {
-  onCreateAgent: () => void;
-  onTalkWithBot: () => void;
-  isLoggedIn?: boolean;
-  onSignOut?: () => void;
+    onCreateAgent: () => void;
+    onTalkWithBot: () => void;
+    isLoggedIn?: boolean;
+    onSignOut?: () => void;
 }
 
 export const NewHeroSection = ({ onCreateAgent, onTalkWithBot, isLoggedIn = false, onSignOut }: NewHeroSectionProps) => {
@@ -37,20 +37,8 @@ export const NewHeroSection = ({ onCreateAgent, onTalkWithBot, isLoggedIn = fals
         <>
             <Navbar onCreateAgent={onCreateAgent} isLoggedIn={isLoggedIn} onSignOut={onSignOut} />
             <main className="overflow-hidden">
-                {/* Powered by Bolt.new Badge */}
-                <a 
-                    href="https://bolt.new" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="fixed top-4 right-4 z-50 hover:opacity-90 transition-opacity"
-                >
-                    <img 
-                        src="/black_circle_360x360.png" 
-                        alt="Powered by Bolt.new" 
-                        className="h-16 w-16"
-                    />
-                </a>
-                
+
+
                 <div
                     aria-hidden
                     className="z-[2] absolute inset-0 pointer-events-none isolate opacity-50 contain-strict hidden lg:block">
@@ -127,7 +115,7 @@ export const NewHeroSection = ({ onCreateAgent, onTalkWithBot, isLoggedIn = fals
                                                 <div className="absolute size-6 rounded-full animate-ping-slow animation-delay-300" style={{ backgroundColor: 'rgba(227, 168, 56, 0.3)' }}></div>
                                                 <div className="absolute size-8 rounded-full animate-ping-slow animation-delay-600" style={{ backgroundColor: 'rgba(227, 168, 56, 0.1)' }}></div>
                                             </div>
-                                            <span className="text-foreground text-sm font-medium">Only 9 spots left this June</span>
+                                            <span className="text-foreground text-sm font-medium">Only 9 spots left this {new Date().toLocaleString('default', { month: 'long' })}</span>
                                         </div>
                                         <span className="dark:border-background block h-4 w-0.5 border-l bg-white dark:bg-zinc-700"></span>
 
@@ -142,13 +130,13 @@ export const NewHeroSection = ({ onCreateAgent, onTalkWithBot, isLoggedIn = fals
                                             </div>
                                         </div>
                                     </button>
-                        
+
                                     <h1
                                         className="mt-8 max-w-4xl mx-auto text-balance text-6xl md:text-7xl lg:mt-16 xl:text-[5.25rem]">
                                         Turn Every Website Visit Into a Sale
                                     </h1>
-                                    
-                                    
+
+
                                 </AnimatedGroup>
 
                                 <AnimatedGroup
@@ -235,8 +223,8 @@ export const NewHeroSection = ({ onCreateAgent, onTalkWithBot, isLoggedIn = fals
                             <div className="relative mt-8 px-2 sm:mt-12 md:mt-20">
                                 <div className="relative mx-auto max-w-6xl rounded-2xl border shadow-lg bg-white dark:bg-gray-900 overflow-hidden">
                                     <div className="relative aspect-video">
-                                        <iframe 
-                                            src="https://www.loom.com/embed/a79c5800ed9748b1af55bbe53e011869?sid=71aa42dc-b359-449e-a225-d2b873f30ae1&autoplay=1&hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true"
+                                        <iframe
+                                            src="https://www.loom.com/embed/5627391c4989496686d37d124f95d035?sid=autoplay=1&hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true"
                                             frameBorder="0"
                                             allowFullScreen
                                             className="absolute inset-0 w-full h-full"

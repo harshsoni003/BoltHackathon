@@ -65,11 +65,6 @@ const App = () => {
 
   // Dashboard component with layout
   const Dashboard = () => {
-    // If user is not authenticated, redirect to sign in
-    if (!user) {
-      return <Navigate to="/signin" replace />
-    }
-    
     return (
       <DashboardLayout user={user} profile={profile} onSignOut={handleSignOut}>
         <DashboardContent />
@@ -82,7 +77,7 @@ const App = () => {
     useEffect(() => {
       window.location.href = to;
     }, [to]);
-    
+
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F5F7FA]">
         <div className="text-center">

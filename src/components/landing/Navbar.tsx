@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, LayoutDashboard } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -12,9 +12,9 @@ const menuItems = [
 ]
 
 interface NavbarProps {
-  onCreateAgent: () => void;
-  isLoggedIn: boolean;
-  onSignOut?: () => void;
+    onCreateAgent: () => void;
+    isLoggedIn: boolean;
+    onSignOut?: () => void;
 }
 
 const Navbar = ({ onCreateAgent, isLoggedIn, onSignOut }: NavbarProps) => {
@@ -30,13 +30,13 @@ const Navbar = ({ onCreateAgent, isLoggedIn, onSignOut }: NavbarProps) => {
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
-    
+
     const handleMenuItemClick = (href: string) => {
         setMenuState(false)
-        
+
         if (href.startsWith('#')) {
             const sectionId = href.substring(1)
-            
+
             // If we're not on the home page, navigate to home first
             if (location.pathname !== '/') {
                 navigate(`/${href}`)
@@ -62,7 +62,7 @@ const Navbar = ({ onCreateAgent, isLoggedIn, onSignOut }: NavbarProps) => {
     const handleHomeClick = (e: React.MouseEvent) => {
         e.preventDefault()
         setMenuState(false)
-        
+
         if (location.pathname !== '/') {
             navigate('/')
         } else {
@@ -72,7 +72,7 @@ const Navbar = ({ onCreateAgent, isLoggedIn, onSignOut }: NavbarProps) => {
             window.history.pushState({}, '', '/')
         }
     }
-    
+
     return (
         <header>
             <nav
@@ -81,14 +81,14 @@ const Navbar = ({ onCreateAgent, isLoggedIn, onSignOut }: NavbarProps) => {
                 <div className={cn('mx-auto mt-2 max-w-6xl px-6 transition-all duration-300 lg:px-12', isScrolled && 'bg-background/50 max-w-4xl rounded-2xl border backdrop-blur-lg lg:px-5')}>
                     <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
                         <div className="flex w-full justify-between lg:w-auto">
-                            <a 
-                                href="/" 
+                            <a
+                                href="/"
                                 onClick={handleHomeClick}
                                 className="flex items-center space-x-2 hover:opacity-90 transition-opacity"
                             >
-                                <img 
-                                    src="DYOTA_logo-removebg-preview.png" 
-                                    alt="DYOTA Logo" 
+                                <img
+                                    src="DYOTA_logo-removebg-preview.png"
+                                    alt="DYOTA Logo"
                                     className="h-16 w-auto"
                                 />
                                 <span className="text-xl font-bold text-black dark:text-white">Voice Bolt</span>
@@ -211,23 +211,17 @@ const Navbar = ({ onCreateAgent, isLoggedIn, onSignOut }: NavbarProps) => {
                                         </Button>
                                     </>
                                 ) : (
-                                    <a 
-                                        href="https://x.com/voiceboltai"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
+                                    <Link to="/dashboard">
                                         <Button
                                             size="sm"
                                             className="bg-black hover:bg-black/90 text-white px-4 py-2 rounded-full transition-all duration-300 font-medium"
                                         >
-                                            <span className="flex items-center gap-3">
-                                                <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
-                                                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                                                </svg>
-                                                <span>@voiceboltai</span>
+                                            <span className="flex items-center gap-2">
+                                                <LayoutDashboard className="h-4 w-4" />
+                                                <span>Dashboard</span>
                                             </span>
                                         </Button>
-                                    </a>
+                                    </Link>
                                 )}
                             </div>
                         </div>

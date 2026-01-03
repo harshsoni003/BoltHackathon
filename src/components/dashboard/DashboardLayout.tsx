@@ -1,8 +1,6 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import DashboardSidebar from './DashboardSidebar';
-import DashboardHeader from './DashboardHeader';
 
 interface UserProfile {
   id: string;
@@ -17,19 +15,26 @@ interface UserProfile {
 }
 
 interface DashboardLayoutProps {
-  user: User;
+  user: User | null;
   profile: UserProfile | null;
   onSignOut: () => void;
   children: React.ReactNode;
 }
 
 const DashboardLayout = ({ user, profile, onSignOut, children }: DashboardLayoutProps) => {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
   return (
-    <div className="min-h-screen bg-[#F5F7FA] flex w-full">
-      <DashboardSidebar />
-      <div className="flex-1 flex flex-col">
-        <DashboardHeader user={user} profile={profile} onSignOut={onSignOut} />
-        <main className="flex-1 p-6">
+    <div className="min-h-screen bg-gray-50 flex w-full">
+      <DashboardSidebar
+        collapsed={sidebarCollapsed}
+        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+      />
+      <div
+        className={`flex-1 flex flex-col transition-all duration-300 ${sidebarCollapsed ? 'ml-20' : 'ml-64'
+          }`}
+      >
+        <main className="flex-1">
           {children}
         </main>
       </div>
