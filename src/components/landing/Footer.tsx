@@ -8,7 +8,7 @@ const Footer = () => {
   const handleSectionClick = useCallback((sectionId: string, e: React.MouseEvent) => {
     e.preventDefault();
     const href = `#${sectionId}`;
-    
+
     if (location.pathname !== '/') {
       // If not on home page, navigate there first with the hash
       navigate(`/${href}`);
@@ -32,7 +32,7 @@ const Footer = () => {
 
   const handleHomeClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    
+
     if (location.pathname !== '/') {
       navigate('/');
     } else {
@@ -50,8 +50,8 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-1">
             <div className="flex items-center mb-4">
-              <a 
-                href="/" 
+              <a
+                href="/"
                 onClick={handleHomeClick}
                 className="flex items-center hover:opacity-90 transition-opacity"
               >
@@ -76,8 +76,8 @@ const Footer = () => {
             <h3 className="text-base font-semibold mb-4">Menu</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a 
-                  href="/" 
+                <a
+                  href="/"
                   onClick={handleHomeClick}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
@@ -85,8 +85,8 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#pricing" 
+                <a
+                  href="#pricing"
                   onClick={(e) => handleSectionClick('pricing', e)}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
@@ -94,8 +94,8 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#cta" 
+                <a
+                  href="#cta"
                   onClick={(e) => handleSectionClick('cta', e)}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
@@ -103,8 +103,8 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#faqs" 
+                <a
+                  href="#faqs"
                   onClick={(e) => handleSectionClick('faqs', e)}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
@@ -117,10 +117,10 @@ const Footer = () => {
           {/* Book a Call */}
           <div>
             <h3 className="text-base font-semibold mb-4">Book a Call</h3>
-            <a 
-              href="https://cal.com/voicebolt/15min" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href="https://cal.com/voicebolt/15min"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-400 hover:text-white transition-colors text-sm"
             >
               Get started today with a free 15 min consult
@@ -129,26 +129,12 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-10 pt-6 text-center md:text-left flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-gray-800 mt-10 pt-6 text-center">
           <p className="text-gray-400 text-xs">
             <Link to="/copyright" className="hover:text-white transition-colors">
               © 2025 Smart Scaling AI, All Rights Reserved
             </Link>
           </p>
-          
-          {/* Powered by Bolt.new Badge */}
-          <a 
-            href="https://bolt.new" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="mt-4 md:mt-0 hover:opacity-90 transition-opacity"
-          >
-            <img 
-              src="/black_circle_360x360.png" 
-              alt="Powered by Bolt.new" 
-              className="h-16 w-16"
-            />
-          </a>
         </div>
       </div>
     </footer>
