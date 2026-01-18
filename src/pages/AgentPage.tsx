@@ -4,9 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  Bot, 
-  Globe, 
+import {
+  Bot,
+  Globe,
   Building2,
   MessageCircle,
   Loader2,
@@ -16,8 +16,8 @@ import {
   CheckCircle,
   Cpu
 } from 'lucide-react';
-import { 
-  getAgentDetails, 
+import {
+  getAgentDetails,
   associateKnowledgeBaseWithAgent,
   createWebsiteKnowledgeBase,
   updateAgentVoice,
@@ -97,10 +97,10 @@ const AgentPage = () => {
   const { agentId } = useParams<{ agentId: string }>();
   const location = useLocation();
   const { toast } = useToast();
-  
+
   // Get state passed from navigation, if available
   const createdAgent = location.state?.agent as CreatedAgentData || null;
-  
+
   // Local state
   const [agentDetails, setAgentDetails] = useState<AgentDetails | null>(null);
   const [isLoadingAgent, setIsLoadingAgent] = useState(false);
@@ -123,7 +123,7 @@ const AgentPage = () => {
     if (Array.isArray(promptKnowledgeBase) && promptKnowledgeBase.length > 0) {
       return true;
     }
-    
+
     // Check all possible legacy locations for knowledge base documents
     const kbLocations = [
       details?.conversation_config?.agent?.knowledge_base?.document_ids,
@@ -131,9 +131,9 @@ const AgentPage = () => {
       details?.agent?.knowledge_base?.document_ids,
       details?.conversation_config?.knowledge_base?.document_ids
     ];
-    
+
     // Check if any location has document IDs
-    return kbLocations.some(loc => 
+    return kbLocations.some(loc =>
       Array.isArray(loc) && loc.length > 0
     );
   };
@@ -144,7 +144,7 @@ const AgentPage = () => {
     if (Array.isArray(promptKnowledgeBase) && promptKnowledgeBase.length > 0) {
       const scrapedContent = promptKnowledgeBase.find(kb => kb.type === 'text' || kb.name?.includes('Content') || kb.name?.includes('FIRE-1'));
       const urlBased = promptKnowledgeBase.find(kb => kb.type === 'url' || kb.name?.includes('URL-based'));
-      
+
       return {
         hasScrapedContent: !!scrapedContent,
         hasUrlBased: !!urlBased,
@@ -153,7 +153,7 @@ const AgentPage = () => {
         totalKnowledgeBases: promptKnowledgeBase.length
       };
     }
-    
+
     return {
       hasScrapedContent: false,
       hasUrlBased: false,
@@ -167,7 +167,7 @@ const AgentPage = () => {
   const checkAgentVisit = async (agentId: string) => {
     try {
       setIsCheckingVisit(true);
-      
+
       // Generate a simple session ID for this browser session
       let sessionId = localStorage.getItem('agent_session_id');
       if (!sessionId) {
@@ -196,13 +196,13 @@ const AgentPage = () => {
         return;
       }
 
-      const result = data as { 
-        allowed: boolean; 
-        current_visits: number; 
-        max_visits: number; 
-        remaining_visits: number; 
-        blocked: boolean; 
-        message: string; 
+      const result = data as {
+        allowed: boolean;
+        current_visits: number;
+        max_visits: number;
+        remaining_visits: number;
+        blocked: boolean;
+        message: string;
       };
 
       setVisitStats(result);
@@ -243,13 +243,13 @@ const AgentPage = () => {
       const promptKnowledgeBase = details?.conversation_config?.agent?.prompt?.knowledge_base;
       if (Array.isArray(promptKnowledgeBase) && promptKnowledgeBase.length > 0) {
         console.log('Found knowledge bases:', promptKnowledgeBase);
-        
+
         // Look for URL-based knowledge base
         const urlBased = promptKnowledgeBase.find(kb => kb.type === 'url' || kb.name?.includes('URL-based') || kb.name?.includes('Website'));
-        
+
         if (urlBased?.id) {
           console.log('Found URL-based knowledge base:', urlBased);
-          
+
           // Fetch the knowledge base details to get the URL
           const apiKey = await getElevenLabsApiKey();
           if (apiKey) {
@@ -260,7 +260,7 @@ const AgentPage = () => {
                 `https://api.elevenlabs.io/v1/knowledge-base/${urlBased.id}`,
                 `https://api.elevenlabs.io/v1/convai/knowledge-bases/${urlBased.id}`
               ];
-              
+
               for (const endpoint of endpoints) {
                 try {
                   console.log('Trying endpoint:', endpoint);
@@ -270,11 +270,11 @@ const AgentPage = () => {
                       'Content-Type': 'application/json',
                     },
                   });
-                  
+
                   if (response.ok) {
                     const kbDetails = await response.json();
                     console.log('Knowledge base details from', endpoint, ':', kbDetails);
-                    
+
                     // The URL might be in different fields depending on the API response structure
                     const websiteUrl = kbDetails.url || kbDetails.source_url || kbDetails.data?.url || kbDetails.data?.source_url || kbDetails.original_url;
                     if (websiteUrl) {
@@ -301,7 +301,7 @@ const AgentPage = () => {
     } catch (error) {
       console.warn('Error extracting website URL from knowledge base:', error);
     }
-    
+
     console.log('Could not extract website URL, returning empty string');
     return '';
   };
@@ -351,10 +351,10 @@ const AgentPage = () => {
           const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
           setMicPermissionGranted(true);
           console.log('Microphone permission granted');
-          
+
           // Stop the stream immediately as we just needed permission
           stream.getTracks().forEach(track => track.stop());
-          
+
           // Remove this toast notification
           // toast({
           //   title: "Microphone Access Granted",
@@ -386,16 +386,16 @@ const AgentPage = () => {
   useEffect(() => {
     const fetchAgentDetails = async () => {
       if (!agentId) return;
-      
+
       try {
         setIsLoadingAgent(true);
         const details = await getAgentDetails(agentId);
         setAgentDetails(details);
         console.log('Loaded agent details:', details);
-        
+
         // Check if agent has knowledge base
         setHasKnowledgeBase(checkKnowledgeBase(details));
-        
+
         // If we don't have createdAgent data from navigation state,
         // create a version from the fetched details with extracted website URL
         if (!localAgent) {
@@ -415,7 +415,7 @@ const AgentPage = () => {
           description: "Could not load agent details. Voice chat may still work.",
           variant: "destructive"
         });
-        
+
         // Set minimal agent info if we failed to load
         if (!localAgent) {
           setLocalAgent({
@@ -441,29 +441,29 @@ const AgentPage = () => {
     setLoadingAssociation(true);
     let scrapedKnowledgeBaseId: string | null = null;
     let urlKnowledgeBaseId: string | null = null;
-    
+
     try {
       toast({
         title: "Creating Knowledge Bases",
         description: "Creating both scraped content and URL-based knowledge bases...",
       });
-      
+
       // First, try to create scraped content knowledge base using FIRE-1 (always enabled for manual creation)
       try {
         const { firecrawlService } = await import('../services/firecrawlService');
-        
+
         toast({
           title: "Creating Knowledge Bases",
           description: "Attempting intelligent website analysis with FIRE-1, falling back to standard extraction if needed...",
         });
-        
+
         const fire1Result = await firecrawlService.extractCompanyInformationWithFIRE1(localAgent.websiteUrl);
-        
+
         if (fire1Result.success && fire1Result.content) {
           // Create a text-based knowledge base from scraped content
           const { getElevenLabsApiKey } = await import('../services/elevenlabs');
           const apiKey = await getElevenLabsApiKey() || import.meta.env.VITE_ELEVENLABS_API_KEY;
-          
+
           if (apiKey) {
             const response = await fetch('https://api.elevenlabs.io/v1/convai/knowledge-base/text', {
               method: 'POST',
@@ -476,7 +476,7 @@ const AgentPage = () => {
                 name: `${localAgent.companyName} FIRE-1 Extracted Content - ${new Date().toLocaleDateString()}`
               }),
             });
-            
+
             if (response.ok) {
               const result = await response.json();
               scrapedKnowledgeBaseId = result.id || result.document_id;
@@ -489,17 +489,17 @@ const AgentPage = () => {
       } catch (error) {
         console.warn('FIRE-1 extraction failed, will try standard scraping:', error);
       }
-      
+
       // Fallback to standard scraping if FIRE-1 didn't work
       if (!scrapedKnowledgeBaseId) {
         try {
           const { firecrawlService } = await import('../services/firecrawlService');
           const scrapeResult = await firecrawlService.scrapeWebsite(localAgent.websiteUrl);
-          
+
           if (scrapeResult.success && scrapeResult.content) {
             const { getElevenLabsApiKey } = await import('../services/elevenlabs');
             const apiKey = await getElevenLabsApiKey() || import.meta.env.VITE_ELEVENLABS_API_KEY;
-            
+
             if (apiKey) {
               const response = await fetch('https://api.elevenlabs.io/v1/convai/knowledge-base/text', {
                 method: 'POST',
@@ -512,7 +512,7 @@ const AgentPage = () => {
                   name: `${localAgent.companyName} Scraped Content - ${new Date().toLocaleDateString()}`
                 }),
               });
-              
+
               if (response.ok) {
                 const result = await response.json();
                 scrapedKnowledgeBaseId = result.id || result.document_id;
@@ -524,7 +524,7 @@ const AgentPage = () => {
           console.warn('Standard scraping also failed:', error);
         }
       }
-      
+
       // Create URL-based knowledge base
       try {
         urlKnowledgeBaseId = await createWebsiteKnowledgeBase(
@@ -534,33 +534,33 @@ const AgentPage = () => {
       } catch (error) {
         console.warn('Failed to create URL-based knowledge base:', error);
       }
-      
+
       if (!scrapedKnowledgeBaseId && !urlKnowledgeBaseId) {
         throw new Error('Failed to create any knowledge bases');
       }
-      
+
       toast({
         title: "Knowledge Bases Created",
         description: `Created ${[scrapedKnowledgeBaseId, urlKnowledgeBaseId].filter(Boolean).length} knowledge base(s). Now associating with your agent...`,
       });
-      
+
       // Associate both knowledge bases with the agent
       const knowledgeBasesToAssociate = [];
-      
+
       if (scrapedKnowledgeBaseId) {
         knowledgeBasesToAssociate.push({
           id: scrapedKnowledgeBaseId,
           name: 'Scraped Content'
         });
       }
-      
+
       if (urlKnowledgeBaseId) {
         knowledgeBasesToAssociate.push({
           id: urlKnowledgeBaseId,
           name: 'URL-based Knowledge'
         });
       }
-      
+
       // Associate each knowledge base with the agent
       for (const kb of knowledgeBasesToAssociate) {
         try {
@@ -569,14 +569,14 @@ const AgentPage = () => {
           console.warn(`Failed to associate ${kb.name}:`, error);
         }
       }
-      
+
       // Refresh agent details to confirm association
       const updatedDetails = await getAgentDetails(agentId);
       setAgentDetails(updatedDetails);
       setHasKnowledgeBase(checkKnowledgeBase(updatedDetails));
-      
+
       const kbDetails = getKnowledgeBaseDetails(updatedDetails);
-      
+
       toast({
         title: "Success!",
         description: `Created and associated ${kbDetails.totalKnowledgeBases} knowledge base source(s) with your agent.`,
@@ -603,14 +603,14 @@ const AgentPage = () => {
         title: "Updating Voice",
         description: "Updating agent voice to Sarah...",
       });
-      
+
       // Update the agent's voice to Sarah
       await updateAgentVoice(agentId);
-      
+
       // Refresh agent details to confirm the update
       const updatedDetails = await getAgentDetails(agentId);
       setAgentDetails(updatedDetails);
-      
+
       toast({
         title: "Voice Updated!",
         description: "Agent voice has been updated to Sarah. Refresh the page to see the changes.",
@@ -637,21 +637,21 @@ const AgentPage = () => {
         title: "Updating LLM",
         description: "Updating agent LLM to Gemini 2.5 Flash...",
       });
-      
+
       // Update using the exported function
       await updateAgentLLM(agentId);
-      
+
       // Refresh agent details to confirm the update
       const updatedDetails = await getAgentDetails(agentId);
       setAgentDetails(updatedDetails);
-      
+
       // Log the current configuration to verify model name
       console.log('Agent details after LLM update:', JSON.stringify(updatedDetails, null, 2));
-      console.log('Current LLM configuration:', 
-        updatedDetails?.conversation_config?.llm || 
+      console.log('Current LLM configuration:',
+        updatedDetails?.conversation_config?.llm ||
         'LLM config not found in response'
       );
-      
+
       toast({
         title: "LLM Updated!",
         description: "Agent LLM has been updated to Gemini 2.5 Flash. Refresh the page to see the changes.",
@@ -675,10 +675,10 @@ const AgentPage = () => {
         title: "Checking Available Models",
         description: "Fetching available LLM models from ElevenLabs API...",
       });
-      
+
       const models = await getAvailableLLMModels();
       console.log('Available LLM models:', models);
-      
+
       toast({
         title: "Models Check Complete",
         description: "Check console for available LLM models",
@@ -706,21 +706,21 @@ const AgentPage = () => {
   // Helper function to get LLM model name safely
   const getLLMModelName = (agentDetails: any) => {
     if (!agentDetails || !agentDetails.conversation_config) return null;
-    
+
     // The LLM configuration might be at different locations in the response
     // Try all possible locations
     const config = agentDetails.conversation_config;
-    
+
     // Check direct llm property
     if (config.llm && config.llm.model_name) {
       return config.llm.model_name;
     }
-    
+
     // Check under agent.llm
     if (config.agent && config.agent.llm && config.agent.llm.model_name) {
       return config.agent.llm.model_name;
     }
-    
+
     return null;
   };
 
@@ -728,10 +728,10 @@ const AgentPage = () => {
     return (
       <div className="container mx-auto max-w-4xl py-8">
         <div className="flex flex-col items-center justify-center p-8">
-          <img 
-            src="/DYOTA_logo-removebg-preview.png" 
-            alt="Loading Agent" 
-            className="w-36 h-36 animate-pulse mb-6" 
+          <img
+            src="/DYOTA_logo-removebg-preview.png"
+            alt="Loading Agent"
+            className="w-36 h-36 animate-pulse mb-6"
           />
           <div className="flex items-center">
             <Loader2 className="w-6 h-6 animate-spin mr-3" />
@@ -758,10 +758,10 @@ const AgentPage = () => {
     return (
       <div className="container mx-auto max-w-4xl py-8">
         <div className="flex flex-col items-center justify-center p-8">
-          <img 
-            src="/DYOTA_logo-removebg-preview.png" 
-            alt="Checking Access" 
-            className="w-36 h-36 animate-pulse mb-6" 
+          <img
+            src="/DYOTA_logo-removebg-preview.png"
+            alt="Checking Access"
+            className="w-36 h-36 animate-pulse mb-6"
           />
           <div className="flex items-center">
             <Loader2 className="w-6 h-6 animate-spin mr-3" />
@@ -785,7 +785,7 @@ const AgentPage = () => {
             <p className="text-lg text-gray-600 mb-6">
               This agent has reached its visit limit ({visitStats?.max_visits || 30} visits).
             </p>
-            
+
             {visitStats && (
               <Card className="max-w-md mx-auto mb-6">
                 <CardHeader>
@@ -807,12 +807,12 @@ const AgentPage = () => {
                 </CardContent>
               </Card>
             )}
-            
+
             <div className="space-y-4">
               <p className="text-gray-600">
                 Contact the agent owner to request additional access or create your own agent.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild>
                   <Link to="/create-agent">
@@ -820,7 +820,7 @@ const AgentPage = () => {
                     Create Your Own Agent
                   </Link>
                 </Button>
-                
+
                 <Button variant="outline" asChild>
                   <Link to="/">
                     <ExternalLink className="w-4 h-4 mr-2" />
@@ -830,13 +830,13 @@ const AgentPage = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Show logo at bottom */}
           <div className="mt-8">
-            <img 
-              src="/DYOTA_logo-removebg-preview.png" 
-              alt="DYOTA Logo" 
-              className="w-24 h-24 opacity-50" 
+            <img
+              src="/DYOTA_logo-removebg-preview.png"
+              alt="DYOTA Logo"
+              className="w-24 h-24 opacity-50"
             />
           </div>
         </div>
@@ -849,7 +849,7 @@ const AgentPage = () => {
       {/* Website Preview in full screen */}
       {localAgent.websiteUrl ? (
         <div className="relative w-full h-full">
-          <WebsiteIframe 
+          <WebsiteIframe
             src={localAgent.websiteUrl}
             title="Website Preview"
             className="w-full h-full border-none"
@@ -863,7 +863,7 @@ const AgentPage = () => {
               });
             }}
           />
-          
+
           {/* Bottom overlay with branding */}
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3 pointer-events-none">
             <div className="flex items-center justify-between">
@@ -871,15 +871,15 @@ const AgentPage = () => {
                 <img src="/DYOTA_logo-removebg-preview.png" alt="DYOTA Logo" className="h-10 w-auto" />
                 <span className="text-black font-semibold">Get Now</span>
               </a>
-              </div>
-             
+            </div>
+
           </div>
-          
+
           {/* ElevenLabs Widget - positioned in the bottom right */}
           <div className="absolute bottom-16 right-4 z-10">
             {isWidgetLoaded && localAgent ? (
               micPermissionGranted ? (
-                <div className="bg-white rounded-lg shadow-lg p-2">
+                <div>
                   {React.createElement('elevenlabs-convai', {
                     'agent-id': localAgent.agentId,
                     'variant': 'compact',
@@ -899,8 +899,8 @@ const AgentPage = () => {
                   <p className="text-xs text-gray-600 text-center mb-3">
                     Please allow microphone access to start voice chat
                   </p>
-                  <Button 
-                    size="sm" 
+                  <Button
+                    size="sm"
                     onClick={() => window.location.reload()}
                     className="text-xs"
                   >
@@ -920,13 +920,13 @@ const AgentPage = () => {
         <div className="flex items-center justify-center h-full">
           <div className="text-center">
             <p className="mb-4 text-lg text-gray-600">No website preview available</p>
-            
+
             {/* Knowledge Base Status */}
             {agentDetails && (
               <div className="mb-6 flex flex-col items-center">
                 {(() => {
                   const kbDetails = getKnowledgeBaseDetails(agentDetails);
-                  
+
                   if (kbDetails.totalKnowledgeBases === 0) {
                     return (
                       <div className="flex items-center text-yellow-600 mb-2">
@@ -935,14 +935,14 @@ const AgentPage = () => {
                       </div>
                     );
                   }
-                  
+
                   return (
                     <div className="flex flex-col items-center space-y-2">
                       <div className="flex items-center text-green-600 mb-2">
                         <CheckCircle className="w-5 h-5 mr-2" />
                         <span>Knowledge base connected ({kbDetails.totalKnowledgeBases} sources)</span>
                       </div>
-                      
+
                       {/* Show knowledge base types */}
                       <div className="flex flex-wrap gap-2 justify-center">
                         {kbDetails.hasScrapedContent && (
@@ -959,9 +959,9 @@ const AgentPage = () => {
                     </div>
                   );
                 })()}
-                
+
                 {!hasKnowledgeBase && !loadingAssociation && (
-                  <Button 
+                  <Button
                     variant="outline"
                     size="sm"
                     onClick={handleAssociateKnowledgeBase}
@@ -971,7 +971,7 @@ const AgentPage = () => {
                     Create knowledge base
                   </Button>
                 )}
-                
+
                 {loadingAssociation && (
                   <div className="flex items-center mt-2">
                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
@@ -980,7 +980,7 @@ const AgentPage = () => {
                 )}
               </div>
             )}
-            
+
             {/* Voice Status */}
             {agentDetails && (
               <div className="mb-6 flex flex-col items-center">
@@ -988,9 +988,9 @@ const AgentPage = () => {
                   <Bot className="w-5 h-5 mr-2" />
                   <span>Update agent voice to Sarah</span>
                 </div>
-                
+
                 {!loadingVoiceUpdate && (
-                  <Button 
+                  <Button
                     variant="outline"
                     size="sm"
                     onClick={handleUpdateVoice}
@@ -1000,7 +1000,7 @@ const AgentPage = () => {
                     Fix Voice to Sarah
                   </Button>
                 )}
-                
+
                 {loadingVoiceUpdate && (
                   <div className="flex items-center mt-2">
                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
@@ -1009,7 +1009,7 @@ const AgentPage = () => {
                 )}
               </div>
             )}
-            
+
             {/* LLM Status */}
             {agentDetails && (
               <div className="mb-6 flex flex-col items-center">
@@ -1017,9 +1017,9 @@ const AgentPage = () => {
                   <Cpu className="w-5 h-5 mr-2" />
                   <span>Update agent LLM to Gemini 2.5 Flash</span>
                 </div>
-                
+
                 {!loadingLLM && (
-                  <Button 
+                  <Button
                     variant="outline"
                     size="sm"
                     onClick={handleUpdateLLM}
@@ -1029,7 +1029,7 @@ const AgentPage = () => {
                     Set LLM to Gemini 2.5 Flash
                   </Button>
                 )}
-                
+
                 {loadingLLM && (
                   <div className="flex items-center mt-2">
                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
@@ -1038,7 +1038,7 @@ const AgentPage = () => {
                 )}
               </div>
             )}
-            
+
             {/* ElevenLabs Widget - centered when no website */}
             {isWidgetLoaded && localAgent ? (
               micPermissionGranted ? (
@@ -1062,7 +1062,7 @@ const AgentPage = () => {
                   <p className="text-sm text-gray-600 text-center mb-4">
                     To start voice chat with your agent, please allow microphone access when prompted by your browser.
                   </p>
-                  <Button 
+                  <Button
                     onClick={() => window.location.reload()}
                     className="mb-2"
                   >
@@ -1079,10 +1079,10 @@ const AgentPage = () => {
                 <span>Loading voice chat widget...</span>
               </div>
             )}
-            
+
             {/* Debug buttons for developers */}
             <div className="flex flex-col gap-2 mt-2">
-              <Button 
+              <Button
                 variant="secondary"
                 size="sm"
                 onClick={handleCheckAvailableModels}
@@ -1090,7 +1090,7 @@ const AgentPage = () => {
               >
                 Check Available Models
               </Button>
-              <Button 
+              <Button
                 variant="secondary"
                 size="sm"
                 onClick={handleShowModelFormat}
@@ -1099,7 +1099,7 @@ const AgentPage = () => {
                 Show Current Model Format
               </Button>
             </div>
-            
+
             {/* Display current model if available */}
             {agentDetails && (
               <div className="mt-4">

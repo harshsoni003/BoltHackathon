@@ -28,7 +28,8 @@ const KNOWN_BLOCKED_DOMAINS = [
   'slack.com',
   'discord.com',
   'whatsapp.com',
-  'telegram.org'
+  'telegram.org',
+  'urbanvalleyresort.com'
 ];
 
 // Proxy services with their characteristics
